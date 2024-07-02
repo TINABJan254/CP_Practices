@@ -17,61 +17,46 @@ const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
 int n, m;
-vi adj[200005];
-int parent[200005], Sz[200005];
-
-void make_set(){
-	for (int i = 1; i <= n; i++){
-		parent[i] = i;
-		Sz[i] = 1;
-	}
-}
-
-int find_set(int u){
-	if (u == parent[u])
-		return u;
-	return parent[u] = find_set(parent[u]);
-}
-
-bool union_sets(int x, int y){
-	x = find_set(x);
-	y = find_set(y);
-	if (x != y){
-		if (Sz[x] < Sz[y]) swap(x, y);
-		parent[y] = x;
-		Sz[x] += Sz[y];
-		return true;	
-	}
-	return false;
-}
+set<int> no_adj[200005];
 
 void solve(){
-	cin >> n >> m;
-	bool a[n + 5][n + 5];
-	memset(a, true, sizeof(a));
+	 cin >> n >> m;
 	for (int i = 0; i < m; i++){
 		int x, y; cin >> x >> y;
-		a[x][y] = false;
-		a[y][x] = false;
+		no_adj[x].insert(y);
+		no_adj[y].insert(x);
 	}
-
-	make_set();
-	for (int i = 1; i <= n; i++){
-		for (int j = i + 1; j <= n; j++)
-			if (a[i][j] && i != j){
-				bool x = union_sets(i, j);
-				a[i][j] = a[j][i] = false;
-			}
-	}
+	set<int> s;//để kiểm soát đỉnh nào đã được duyệt
+	for (int i = 1; i <= n; i++) s.insert(i);
 
 	vi res;
 	for (int i = 1; i <= n; i++){
-		if (i == parent[i]){
-			res.pb(Sz[i]);
+		//chua duyet i
+		if (s.count(i)){
+			s.erase(i); //đánh dấu i đã duyệt
+			//BFS từ i đến các đỉnh kề với i
+			int cnt = 0; //đếm số đỉnh kề với i (hay size của connected component)
+			queue<int> q;
+			q.push(i);
+			while (!q.empty()){
+				int u = q.front();
+				q.pop();
+				++cnt;
+				vi ds;
+				for (auto v : s)
+					if (!no_adj[u].count(v)){
+						q.push(v);
+						ds.pb(v);//đưa v vào tập đã duyệt
+					}
+				//đánh dấu tất cả các x đã được duyệt
+				for (auto x : ds)
+					s.erase(x); 
+			}
+			res.pb(cnt);
 		}
 	}
-	sort(res.begin(), res.end());
 	cout << res.sz << EL;
+	sort(res.begin(), res.end());
 	for (auto x : res)
 		cout << x << ' ';
 }
@@ -83,5 +68,6 @@ int main(){
 }
 
 /*
+Note: ko dùng set để lưu tập kết quả, vì số đỉnh của tplt có thể bằng nhau
 https://codeforces.com/problemset/problem/920/E
 */
