@@ -16,33 +16,39 @@ using namespace std;
 const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
-vi adj[10005];
-bool visited[10005];
+int n;
+int a[550][550];
+int d;
 
-void DFS(int u){
-	visited[u] = true;
-	for (auto v : adj[u])
-		if (!visited[v])
-			DFS(v);
+void DFS(int i, int j, int x){
+	if (d > x)
+		return;
+	a[i][j] = x;
+	//Ưu tiên đi sang trái trước
+	if (j - 1 >= 0 && a[i][j - 1] == 0){
+		++d;
+		DFS(i, j - 1, x);
+	}
+	if (i + 1 < n && a[i + 1][j] == 0){
+		++d;
+		DFS(i + 1, j, x);
+	}
 }
 
 void solve(){
-	int n; cin >> n;
-	for (int i = 1; i <= n; i++){
+	cin >> n;
+	memset(a, 0, sizeof(a));
+	for (int i = 0; i < n; i++){
+		d = 1;
 		int x; cin >> x;
-		adj[i].pb(x);
-		adj[x].pb(i);
+		DFS(i, i, x);
 	}
 
-	int res = 0;
-	for (int i = 1; i <= n; i++){
-		if (!visited[i]){
-			++res;
-			DFS(i);
-		}	
-	}	
-
-	cout << res << EL;
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j <= i; j++)
+			cout << a[i][j] << ' ';
+		cout << EL;
+	}
 
 }
 
@@ -53,5 +59,5 @@ int main(){
 }
 
 /*
-https://codeforces.com/problemset/problem/755/C
+
 */

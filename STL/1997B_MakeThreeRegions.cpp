@@ -16,42 +16,33 @@ using namespace std;
 const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
-vi adj[10005];
-bool visited[10005];
-
-void DFS(int u){
-	visited[u] = true;
-	for (auto v : adj[u])
-		if (!visited[v])
-			DFS(v);
-}
-
 void solve(){
+	int res = 0;
 	int n; cin >> n;
-	for (int i = 1; i <= n; i++){
-		int x; cin >> x;
-		adj[i].pb(x);
-		adj[x].pb(i);
+	string r1, r2; cin >> r1 >> r2;
+	for (int i = 1; i < n; i++){
+		if (r1[i] == '.' && r2[i-1] == 'x' && r2[i + 1] == 'x' 
+			&& r2[i] == '.' && r1[i - 1] == '.' && r1[i + 1] == '.')
+				++res;
 	}
 
-	int res = 0;
-	for (int i = 1; i <= n; i++){
-		if (!visited[i]){
+	for (int i = 1; i < n; i++){
+		if (r2[i] == '.' && r1[i-1] == 'x' && r1[i + 1] == 'x' 
+			&& r1[i] == '.' && r2[i - 1] == '.' && r2[i + 1] == '.')
 			++res;
-			DFS(i);
-		}	
-	}	
-
+	}
 	cout << res << EL;
-
 }
 
 int main(){
 	faster();
-	solve();
+	int TC; cin >> TC;
+	while (TC--){
+	    solve();
+	}
 	return 0;
 }
 
 /*
-https://codeforces.com/problemset/problem/755/C
+
 */

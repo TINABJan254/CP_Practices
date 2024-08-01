@@ -76,11 +76,13 @@ int main(){
 	BFS();
 }
 /*
-Cho số nguyên N và một hoán vị P[] có độ dài 2N, gồm các phần tử {1, 2, …, 2N-1, 2N}. Có 2 loại thao tác:
+Cho số nguyên N và một hoán vị P[] có độ dài 2N, gồm các phần tử 
+{1, 2, …, 2N-1, 2N}. Có 2 loại thao tác:
 
 Đổi chỗ các phần tử P[1] vs P[2], P[3] vs P[4], …, P[2N-1] vs P[N].
 Đổi chỗ các phần tử P[1] vs P[N+1], P[2] vs P[N+2], …, P[N] vs P[2N].
-Nhiệm vụ của bạn là hãy sử dụng ít phép biến đổi nhất để đưa hoán vị P[] ban đầu về thành một dãy số tăng dần.
+Nhiệm vụ của bạn là hãy sử dụng ít phép biến đổi nhất để đưa hoán vị P[] 
+ban đầu về thành một dãy số tăng dần.
 
 Input: 
 

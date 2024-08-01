@@ -16,42 +16,37 @@ using namespace std;
 const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
-vi adj[10005];
-bool visited[10005];
-
-void DFS(int u){
-	visited[u] = true;
-	for (auto v : adj[u])
-		if (!visited[v])
-			DFS(v);
-}
-
 void solve(){
 	int n; cin >> n;
+	ll res = 0;
+	stack<int> st;
 	for (int i = 1; i <= n; i++){
-		int x; cin >> x;
-		adj[i].pb(x);
-		adj[x].pb(i);
+		char x; cin >> x;
+		if (st.empty()){
+			st.push(i);
+		}
+		else{
+			if (x == ')' || x == '_'){
+				res += 1ll*(i - st.top());
+				st.pop();
+			}
+			else
+				st.push(i);
+		}
 	}
 
-	int res = 0;
-	for (int i = 1; i <= n; i++){
-		if (!visited[i]){
-			++res;
-			DFS(i);
-		}	
-	}	
-
 	cout << res << EL;
-
 }
 
 int main(){
 	faster();
-	solve();
+	int TC; cin >> TC;
+	while (TC--){
+	    solve();
+	}
 	return 0;
 }
 
 /*
-https://codeforces.com/problemset/problem/755/C
+
 */
