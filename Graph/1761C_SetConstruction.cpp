@@ -16,28 +16,33 @@ using namespace std;
 const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
-int fre[1000005];
+int f[105][105];
 
 void solve(){
 	int n; cin >> n;
-	int a[n + 5];
-	int maxE = -1;
-	memset(fre, 0, sizeof(fre));
-	for (int i = 0; i < n; i++){
-		cin >> a[i];
-		maxE = max(maxE, a[i]);
-		fre[a[i]]++;
+
+	for (int i = 1; i <= n; i++){
+		string r; cin >> r;
+		for (int j = 0; j < r.sz; j++)
+			f[i][j + 1] = r[j] - '0';
+		f[i][i] = 1;
 	}
 
-	for (int uoc = maxE; uoc >= 1; uoc--){
-		int cnt = 0;
-		for (int boi = uoc; boi <= maxE; boi += uoc){ //boi là các bội của uoc
-			cnt += fre[boi];
-		}
-		if (cnt >= 2){
-			cout << uoc << EL;
-			break;
-		}
+	//Floy
+	for (int k = 1; k <= n; k++)
+		for (int i = 1; i <= n; i++)
+			for (int j = 1; j <= n; j++)
+				f[i][j] = f[i][j] || (f[i][k] && f[k][j]);
+
+	for (int i = 1; i <= n; i++){
+		vi res;
+		for (int j = 1; j <= n; j++)
+			if (f[j][i]) // Aj la con cua Ai
+				res.pb(j);
+		cout << res.sz << " ";
+		for (int x : res)
+			cout << x << " ";
+		cout << EL;
 	}
 }
 
@@ -51,6 +56,5 @@ int main(){
 }
 
 /*
-tìm ước từ số lớn nhất trong mảng
-nếu tồn tại 2 số là bội của của ước đó thì ước đó thỏa mãn
+
 */
