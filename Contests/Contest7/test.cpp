@@ -42,11 +42,20 @@ void solve(){
 }
 
 int main(){
-	faster();
-	int TC; cin >> TC;
-	while (TC--){
-	    solve();
+//	faster();
+//	int TC; cin >> TC;
+//	while (TC--){
+//	    solve();
+//	}
+	
+	int a = 0;
+	if (a = 0){
+		cout << "Zero";
 	}
+	else{
+		cout << "Non-zero";
+	}
+
 	return 0;
 }
 
