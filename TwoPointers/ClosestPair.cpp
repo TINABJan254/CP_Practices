@@ -57,5 +57,6 @@ int main()
     return 0;
 }
 /*
+2sum: bản khá dễ, ptử phân biệt, đưa ra 1 cặp bất kì, tìm cặp gần đúng với target
 https://www.geeksforgeeks.org/problems/find-the-closest-pair-from-two-arrays4215/1?itm_source=geeksforgeeks
 */

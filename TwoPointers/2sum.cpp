@@ -76,5 +76,6 @@ int main() {
 // } Driver Code Ends
 
 /*
+2sum: bản trung bình, tìm các cặp gần bằng target, các ptử phân biệt
 https://www.geeksforgeeks.org/problems/pair-in-array-whose-sum-is-closest-to-x1124/1?itm_source=geeksforgeeks&itm_medium=article&itm_campaign=practice_card
 */
