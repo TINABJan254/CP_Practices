@@ -17,24 +17,34 @@ const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
 void solve(){
-    int n, k; cin >> n >> k;
-    string s; cin >> s;
-    
-    int ans = 0;
-    int i = 0;
-    while (i < n){
-        if (s[i] == 'B'){
-            ++ans;
-            i += k;
-        } else {
-            ++i;
+    int n; cin >> n;
+    int a[n], b[n];
+    for (int &x : a) cin >> x;
+    for (int &x : b) cin >> x;
+
+    int t1[n], t2[n];
+    for (int i = 0; i < n; i++){
+        t1[i] = a[i] - b[i];
+        t2[i] = b[i] - a[i];
+    }
+
+    int maxPos = max_element(t2, t2 + n) - t2;
+    bool check = true;
+    for (int i = 0; i < n; i++){
+        if (t1[i] < t2[maxPos] && i != maxPos){
+            check = false;
+            break;
         }
     }
 
-    cout << ans << EL;
+    if (check){
+        cout << "YES\n";
+    } else {
+        cout << "NO\n";
+    }
 }
 
-void iof(){
+void local(){
     #ifndef ONLINE_JUDGE
         freopen("inputf.txt", "r", stdin);
         //freopen("outputf.txt", "w", stdout);
@@ -42,11 +52,11 @@ void iof(){
 }
 
 int main(){
-    iof();
+    local();
     faster();
     int TC; cin >> TC;
     while (TC--){
-      solve();
+        solve();
     }
     return 0;
 }

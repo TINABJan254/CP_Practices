@@ -17,21 +17,17 @@ const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
 void solve(){
-    int n, k; cin >> n >> k;
-    string s; cin >> s;
-    
-    int ans = 0;
-    int i = 0;
-    while (i < n){
-        if (s[i] == 'B'){
-            ++ans;
-            i += k;
-        } else {
-            ++i;
-        }
+    string s; cin >> s >> s;
+    int l = 0, r = s.sz - 1;
+    while (l < r && s[l] != s[r]){
+        ++l;
+        --r;
     }
-
-    cout << ans << EL;
+    string ans = "";
+    if (l <= r){
+        ans = s.substr(l, r-l+1);
+    }
+    cout << ans.sz << EL;
 }
 
 void iof(){

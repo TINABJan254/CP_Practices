@@ -17,21 +17,22 @@ const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
 void solve(){
-    int n, k; cin >> n >> k;
-    string s; cin >> s;
-    
-    int ans = 0;
-    int i = 0;
-    while (i < n){
-        if (s[i] == 'B'){
-            ++ans;
-            i += k;
-        } else {
-            ++i;
+    int n, t; cin >> n >> t;
+    int a[n]; 
+    for (int &x : a) cin >> x;
+
+    int l = 0, r = 0;
+    int ans = -1, curSum = 0;
+    for (int r = 0; r < n; r++){
+        curSum += a[r];
+        while (curSum > t){
+            curSum -= a[l];
+            ++l;
         }
+        ans = max(ans, r - l + 1);
     }
 
-    cout << ans << EL;
+    cout << ans;
 }
 
 void iof(){
@@ -44,10 +45,7 @@ void iof(){
 int main(){
     iof();
     faster();
-    int TC; cin >> TC;
-    while (TC--){
-      solve();
-    }
+    solve();
     return 0;
 }
 /*
