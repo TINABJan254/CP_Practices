@@ -17,46 +17,31 @@ const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
 void solve(){
-    int n, m; cin >> n >> m;
+    int n; cin >> n;
 
-    multiset<int> a, b;
-    for (int i = 0; i < n; i++){
-        int x; cin >> x;
-        a.insert(x);
-    }
+    vi a(n); 
+    for (int &x : a) cin >> x;
 
-    for (int i = 0; i < m; i++){
-        int x; cin >> x;
-        b.insert(x);
-    }
-
-    while (!b.empty()) {
-        if (b.sz > a.sz){
-            cout << "No\n"; return;
-        }
-
-        int x = *b.rbegin(); b.erase(b.find(x));
-
-        if (*a.rbegin() == x){
-            a.erase(a.find(x));
+    for (int i = 0; i < n-1; i++){
+        if (a[i] > a[i + 1]){
+            cout << "NO\n"; return;
         } else {
-            b.insert(x/2);
-            b.insert(x-x/2); //b.insert(x/2 + x%2);
+            a[i+1] -= a[i];
         }
     }
 
-    if (a.sz) cout << "No\n"; else cout << "Yes\n";
+    cout << "YES\n";
 }
 
 void iof(){
     #ifndef ONLINE_JUDGE
         freopen("inputf.txt", "r", stdin);
-        // freopen("outputf.txt", "w", stdout);
+        //freopen("outputf.txt", "w", stdout);
     #endif
 }
 
 int main(){
-    iof();
+    // iof();
     faster();
     int TC; cin >> TC;
     while (TC--){
@@ -65,5 +50,5 @@ int main(){
     return 0;
 }
 /*
-
+a[i] > a[i+1] => no way
 */
