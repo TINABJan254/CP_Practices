@@ -88,5 +88,10 @@ int main(){
     return 0;
 }
 /*
-    
+    Có 2 loại truy vấn:
+        Q1: u, val   -> tăng giá trị a[u] thêm bằng val
+        Q2: u, v     -> tính giá trị tại a[u]+...+a[v];
+
+    Ý tưởng:
+        Sử dụng tính chất mảng cộng dồn 
 */
