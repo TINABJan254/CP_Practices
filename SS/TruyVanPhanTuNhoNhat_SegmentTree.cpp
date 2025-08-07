@@ -32,13 +32,8 @@ void build(int node, int tl, int tr) {
 
         int idx1 = tree[2 * node];
         int idx2 = tree[2 * node + 1];
-if (a[idx1] < a[idx2]) {
-            tree[node] = idx1;
-        } else if (a[idx1] > a[idx2]) {
-            tree[node] = idx2;
-        } else {
-            tree[node] = min(idx1, idx2);
-        }
+
+        tree[node] = (a[idx1] <= a[idx2]) ? idx1 : idx2;
     }
 }
 
@@ -57,15 +52,7 @@ void update(int node, int tl, int tr, int idx, int val) {
         int idx1 = tree[2 * node];
         int idx2 = tree[2 * node + 1];
 
-        if (a[idx1] < a[idx2]) {
-            tree[node] = idx1;
-        } else if (a[idx1] > a[idx2]) {
-            tree[node] = idx2;
-        } else {
-            tree[node] = min(idx1, idx2);
-        }
-
-        // tree[node] = (a[idx1] <= a[idx2]) ? idx1 : idx2;
+        tree[node] = (a[idx1] <= a[idx2]) ? idx1 : idx2;
     }
 }
 
@@ -78,15 +65,7 @@ int query(int node, int tl, int tr, int l, int r) {
     int p1 = query(2 * node, tl, mid, l, r);
     int p2 = query(2 * node + 1, mid + 1, tr, l, r);
 
-    if (a[p1] < a[p2]) {
-        return p1;
-    } else if (a[p1] > a[p2]) {
-        return p2;
-    } else {
-        return min(p1, p2);
-    }
-
-    // return (a[p1] <= a[p2] ? p1 : p2);
+    return (a[p1] <= a[p2] ? p1 : p2);
 }
 
 void solve(){
@@ -132,5 +111,17 @@ int main(){
     return 0;
 }
 /*
-    
+    Có thể cần so sánh chặt hơn ở phần lựa chọn idx1, idx2 vì người ta yêu cầu
+    chọn idx nhỏ nhất, nhưng ở đây lúc đệ quy ta luôn đệ quy bên trái trước nên có thể
+    đã đảm bảo idx1 < idx2
+
+    code so sánh kĩ:
+    if (a[idx1] < a[idx2]) {
+        tree[node] = idx1;
+    } else if (a[idx1] > a[idx2]) {
+        tree[node] = idx2;
+    } else {
+        tree[node] = min(idx1, idx2);
+    }
+
 */
