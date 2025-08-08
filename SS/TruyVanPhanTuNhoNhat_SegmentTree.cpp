@@ -111,6 +111,32 @@ int main(){
     return 0;
 }
 /*
+    Cho dãy số A[] có N phần tử. Có 2 loại truy vấn như sau:
+    1 u val: Cập nhật giá trị A[u] = val
+    2 u v: Yêu cầu in ra chỉ số i sao cho A[i] là phần tử nhỏ nhất trong đoạn [u, v]. Nếu có nhiều đáp án, hãy tìm chỉ số i nhỏ nhất.
+    Input:
+    Dòng đầu tiên gồm 2 số nguyên, số lượng phần tử N và số lượng truy vấn M (N, M ≤ 200000).
+    Dòng tiếp theo gồm N số nguyên mô tả dãy số A[i] (-10^9 ≤ A[i] ≤ 10^9).
+    M dòng tiếp, mỗi dòng gồm 1 truy vấn.
+    Output:
+    Với mỗi truy vấn loại 2, hãy in ra đáp án tìm được trên một dòng.
+    Test ví dụ:
+    Input:
+    5 4
+    1 2 3 4 5
+    2 2 5
+    1 3 1
+    2 1 5
+    2 2 5
+    Output:
+    2
+    1
+    3
+
+    Ý tưởng:
+    Sử dụng segment tree, nhưng ở đây mỗi node ta lưu chỉ số ptử nhỏ nhất của đoạn
+    mà node đó quản lý
+    
     Có thể cần so sánh chặt hơn ở phần lựa chọn idx1, idx2 vì người ta yêu cầu
     chọn idx nhỏ nhất, nhưng ở đây lúc đệ quy ta luôn đệ quy bên trái trước nên có thể
     đã đảm bảo idx1 < idx2

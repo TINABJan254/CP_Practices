@@ -98,6 +98,32 @@ int main(){
     return 0;
 }
 /*
+    Cho một dãy ngoặc độ dài N, cho M truy vấn có dạng L[i], R[i].
+    Yêu cầu của bài toán là với mỗi truy vấn tìm một chuỗi con (không cần liên tiếp) của chuỗi từ vị trí L[i] đến R[i] dài nhất mà tạo thành một dãy ngoặc đúng.
+    Input:
+    Dòng đầu tiên là một xâu mô tả dãy ngoặc có độ dài không quá 1000000. Chỉ số của xâu bắt đầu từ 1.
+    Tiếp theo là số lượng truy vấn M (M ≤ 100000).
+    M dòng tiếp, mỗi dòng gồm 2 số nguyên L[i], R[i] mô tả một truy vấn (1 ≤ L[i], R[i] ≤ N).
+    Output:
+    Với mỗi truy vấn, hãy in ra độ dài của chuỗi con là dãy ngoặc đúng dài nhất tìm được.
+    Test ví dụ:
+    Input:
+    (())((())()())(
+    5
+    2 2
+    2 3
+    1 6
+    2 9
+    1 13
+    Output:
+    0
+    2
+    4
+    6
+    12
+
+    Ý tưởng:
+    Dùng segment tree
     Node lưu 3 thông tin
         maxAns: độ dài chuỗi con dài nhất là dãy ngoặc đúng (trong đoạn mà node đó quản lý)
         open: số dấu '(' không nằm trong maxAns

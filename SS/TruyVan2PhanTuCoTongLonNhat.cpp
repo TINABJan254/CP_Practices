@@ -108,7 +108,7 @@ void iof(){
 }
 
 int main(){
-    iof();
+    // iof();
     faster();
     int TC = 1; 
     // cin >> TC;
@@ -119,6 +119,42 @@ int main(){
     }
     return 0;
 }
+/**
+ *    author:  thienban
+ *    created: 08-08-2025 21:31:32
+**/
+
 /*
+    Cho dãy số A = A[1], A[2], …, A[N] (0 <= A[i] <= 10^8). 
+    Có 2 loại truy vấn như sau:
+    +) U u val: Thay giá trị A[u] = val (val <= 10^8).
+
+    +) Q u v: Yêu cầu tìm ra 2 phần tử i, j nằm trong đoạn [u, v] (i khác j) sao cho tổng A[i] + A[j] là lớn nhất có thể.
+
+    Input:
+    Dòng đầu tiên là số lượng phần tử N và số lượng truy vấn M (N, M <= 100 000).
+    M dòng tiếp, mỗi dòng gồm 1 dạng truy vấn.
+    Output: 
+    Với mỗi truy vấn loại 1, hãy in ra đáp án tìm được trên một dòng.
+
+    Test ví dụ:   
+    Input
+    5 4
+    1 2 3 4 5
+    Q 2 5
+    Q 2 4
+    U 1 8
+    Q 1 5
     
+    Output
+    9
+    7
+    13
+
+    Ý tưởng:
+        Với tìm max, ta làm tương tự tìm min
+        Mỗi node ta sẽ lưu cả index, value max của đoạn mà node đó quản lý
+        Ta sẽ tiến hành tìm kiếm max 2 lần để được 2 giá trị lớn nhất
+        Khi đã tìm được max1, ta tiến hành tìm max2 bằng cách vẫn tìm trong đoạn đó
+        nhưng bỏ qua max1, tức là tìm trong đoạn (L->idx_max1 - 1), (idx_max1 + 1 -> R)
 */

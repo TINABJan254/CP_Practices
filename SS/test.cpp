@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
 #define endl "\n"
@@ -9,76 +8,81 @@ using namespace std;
 #define sz size()
 #define pb push_back
 #define vi vector<int>
+#define vll vector<ll>
 #define vvi vector<vector<int>>
-#define vll vector<long long>
-#define vvl vector<vector<long long>>
-#define faster() ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 #define pii pair<int, int>
 #define pll pair<ll, ll>
+#define FOR(i, a, b) for(int i =a; i <=b; i++)
+#define FOD(i, a, b) for(int i =a; i >=b; i--)
+#define INF INT_MAX
+#define MASK(i) (1LL << (i))
+#define BIT(x, i) (((x) >> (i)) & 1)
+#define COUNT_ONE(x) __builtin_popcountll((x))
+#define COUNT_LEAD_ZERO(x) __builtin_clzll((x))
+#define COUNT_TRAIL_ZERO(x) __builtin_ctzll((x))
+#define SHOW1(x) cout << #x << " = " << (x) << endl << flush
+#define SHOW2(x, y) cout << #x << "=" << (x) << " " << #y << "=" << (y) << endl << flush
+#define faster() ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-const int MOD = 1e9 + 7;
-const int N = 1e6 + 5;
+ll MOD;
 
-struct Node {
-    int maxAns;
-    int open; 
-    int close;
+ll mulMod(ll a, ll b){
+    ll res = 0;
+    a %= MOD;
+    while(b){
+        if(b & 1){
+            res = (res + a) % MOD;
+        }
+        a = a * 2 % MOD;
+        b /= 2;
+    }
+    return res;
+}
 
-    Node(int ans = 0, int o = 0, int c = 0) : maxAns(ans), open(o), close(c){}
+struct Matrix{
+    ll a[2][2];
+
+    friend Matrix operator * (Matrix x, Matrix y){
+        Matrix z;
+        FOR(i, 0, 1){
+            FOR(j, 0, 1){
+                z.a[i][j] = 0;
+                FOR(k, 0, 1){
+                    z.a[i][j] = (z.a[i][j] % MOD) + mulMod(x.a[i][k], y.a[k][j]);
+                    z.a[i][j] %= MOD;
+                }
+            }
+        }
+        return z;
+    }
 };
 
-Node tree[4 * N];
-string s;
-int m;
-
-Node mergeNode(Node l_node, Node r_node){
-    int t = min(l_node.open, r_node.close);
-    return Node(
-        l_node.maxAns + r_node.maxAns + 2*t,
-        l_node.open + r_node.open - t,
-        r_node.close + l_node.close - t
-    );
-}
-
-void build(int node, int tl, int tr){
-    if (tl == tr) {
-        if (s[tl] == '(') tree[node].open++;
-        else tree[node].close++;
-        tree[node].maxAns = 0;
-    } else {
-        int mid = (tl + tr) / 2;
-        build(2 * node, tl, mid);
-        build(2 * node + 1, mid + 1, tr);
-
-        tree[node] = mergeNode(tree[2*node], tree[2*node+1]);
+Matrix powMod(Matrix x, ll p){
+    if(p == 0) {
+        Matrix I;
+        I.a[0][0] = 1; I.a[0][1] = 0;
+        I.a[1][0] = 0; I.a[1][1] = 1;
+        return I;
     }
-}
+    Matrix half = powMod(x, p / 2);
 
-Node query(int node, int tl, int tr, int l, int r) {
-    if (l > tr || r < tl) return Node();
-    if (l <= tl && tr <= r) return tree[node];
-
-    int mid = (tl + tr) / 2;
-    Node l_node = query(2 * node, tl, mid, l, r);
-    Node r_node = query(2 * node + 1, mid + 1, tr, l , r);
-
-    return mergeNode(l_node, r_node);
-}
-
-void solve(){
-    cin >> s;
-
-    build(1, 0, s.sz-1);
-
-    // for (int i = 0; i < 50; i++) cout << i << " " << tree[i].maxAns << " " << tree[i].open << " " << tree[i].close << endl;
-
-    cin >> m;
-    while (m--) {
-        int l, r; cin >> l >> r;
-        cout << query(1, 0, s.sz - 1, --l, --r).maxAns << endl;
+    Matrix res = half * half;
+    if(p & 1){
+        res = res * x;
     }
-
+    return res;
 }
+
+void HuyenMay(){   
+    ll p; cin >> p >> MOD;
+
+    Matrix x;
+    x.a[0][0] = 1; x.a[0][1] = 1;
+    x.a[1][0] = 1; x.a[1][1] = 0;
+
+    Matrix res = powMod(x, p + 1);
+    cout << res.a[1][0] << endl;
+}   
 
 void iof(){
     #ifndef ONLINE_JUDGE
@@ -88,42 +92,16 @@ void iof(){
 }
 
 int main(){
-    iof();
     faster();
-    int TC = 1; 
-    // cin >> TC;
-    while (TC--){
-      solve();
+    iof();
+    int t = 1;
+    cin >> t;
+    while(t--){
+        HuyenMay();
     }
     return 0;
 }
+
 /*
-    Node lưu 3 thông tin
-        maxAns: độ dài chuỗi con dài nhất là dãy ngoặc đúng (trong đoạn mà node đó quản lý)
-        open: số dấu '(' không nằm trong maxAns
-        close: số dấu ')' không nằm trong maxAns
-
-    Thao tác mergeNode là một công thức quy hoạch động 
-        Ta có 2 node A(left), B(right) => X = merge(A, B)
-        t = min(A.open, B.open) - dấu mở bên phải kết hợp với dấu đóng bên trái
-        X.maxAns = A.maxAns + B.maxAns + t*2; (*2 bởi vì 1 cặp có độ dài 2)
-        X.open = A.open + B.open - t;
-        X.close = A.close + B.close - t;
-
-        A = (()() 
-            A.maxAns = 4
-            A.open = 1
-            A.close = 0
-
-        B = ()))
-            B.maxAns = 2
-            B.open = 0
-            B.close = 2
-
-        X = A + B = (()()()))
-            t = 1
-            X.maxAns = 4 + 2 + 1*2 = 8
-            X.open = 0
-            x.close = 1
-
+    HungLam
 */
