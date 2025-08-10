@@ -21,7 +21,6 @@ const int N = 1e6 + 5;
 
 struct Data{
     multiset<int> ms;
-    // Data(multiset<int> ms) : ms(ms) {};
 };
 
 Data tree[4*N];
@@ -46,42 +45,21 @@ void build(int node, int tl, int tr) {
     }
 }
 
-void update(int node, int tl, int tr, int idx, int val) {
+void update(int node, int tl, int tr, int idx, int oldv, int newv) {
+    auto it = tree[node].ms.find(oldv);
+    if (it != tree[node].ms.end()) {
+        tree[node].ms.erase(it);
+    }
+    tree[node].ms.insert(newv);
     if (tl == tr) {
-        tree[node].ms.erase(tree[node].ms.find(a[idx]));
-        tree[node].ms.insert(val);
-        a[idx] = val;
-    } else {
-        int mid = (tl + tr) / 2;
-        if (idx <= mid) {
-            update(2*node, tl, mid, idx, val);
-        } else {
-            update(2*node + 1, mid + 1, tr, idx, val);
-        }
-
-        tree[node] = mergeNode(tree[2*node], tree[2*node + 1]);
+        return;
     }
-}
-
-Data getRes(int node, int tl, int tr, int l, int r) {
-    if (l > tr || r < tl) return Data();
-    if (l <= tl && tr <= r) return tree[node];
-
     int mid = (tl + tr) / 2;
-    Data d1 = getRes(2*node, tl, mid, l, r);
-    Data d2 = getRes(2*node + 1, mid + 1, tr, l, r);
-
-    return mergeNode(d1, d2);
-}
-
-int query(int l, int r, int x) {
-    Data res = getRes(1, 1, n, l, r);
-
-    auto it = res.ms.upper_bound(x);
-    if (it != res.ms.end()){
-        return *it;
+    if (idx <= mid) {
+        update(2*node, tl, mid, idx, oldv, newv);
+    } else {
+        update(2*node + 1, mid + 1, tr, idx, oldv, newv);
     }
-    return -1;
 }
 
 int query2(int node, int tl, int tr, int l, int r, int x) {
@@ -106,8 +84,10 @@ void solve(){
     while (m--) {
         int q; cin >> q;
         if (q == 1){
-            int u, v; cin >> u >> v;
-            update(1, 1, n, u, v);
+            int u, val; cin >> u >> val;
+            int oldv = a[u];
+            update(1, 1, n, u, oldv, val);
+            a[u] = val;
         } else {
             int l, r, x; cin >> l >> r >> x;
             int ans = query2(1, 1, n, l, r, x);
@@ -133,7 +113,3 @@ int main(){
     }
     return 0;
 }
-
-/*
-    
-*/
