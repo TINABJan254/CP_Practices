@@ -1,3 +1,4 @@
+// TLE
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -19,35 +20,19 @@ using namespace std;
 const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
-int sumDigit(ll n) {
-    string s = to_string(n);
-    int ans = 0;
-    for (char c : s) ans += c - '0'; 
-    return ans; 
-
-}
-
 void solve(){
-    ll n, s; cin >> n >> s;
+    ll a, b, c, d; cin >> a >> b >> c >> d;
+    ll m = c - b;
+    ll maxK = (d - 2) / m;
+    ll ans = 0;
 
-    if (sumDigit(n) <= s) {
-        cout << 0 << endl;
-        return;
+    ll r = a % d; //ứng với k = 0;
+    for (ll k = 0; k <= maxK; k++) {
+        if (r >= 1 && r <= d-1 - m*k) ++ans;
+        r = (r + b) % d;
     }
 
-    ll ans = 0, pow10 = 1;
-    while (sumDigit(n) > s) {
-        ll r = n % pow10;
-        if (r != 0) {
-            ll x = pow10 - r;
-            n += x;
-            ans += x;
-        }
-
-        pow10 *= 10; //lam tron hang tiep
-    }
-
-    cout << ans << endl;
+    cout << ans - 1<< endl;
 }
 
 void iof(){

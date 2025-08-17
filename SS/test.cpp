@@ -80,8 +80,8 @@ void HuyenMay(){
     x.a[0][0] = 1; x.a[0][1] = 1;
     x.a[1][0] = 1; x.a[1][1] = 0;
 
-    Matrix res = powMod(x, p + 1);
-    cout << res.a[1][0] << endl;
+    Matrix res = powMod(x, p - 1);
+    cout << res.a[0][0] + res.a[0][1] << endl;
 }   
 
 void iof(){

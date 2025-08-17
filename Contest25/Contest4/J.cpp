@@ -19,35 +19,37 @@ using namespace std;
 const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
-int sumDigit(ll n) {
-    string s = to_string(n);
-    int ans = 0;
-    for (char c : s) ans += c - '0'; 
-    return ans; 
-
+int getSxq(int a, int b) {
+    if (a > b)
+        return a-b;
+    return 0;
 }
 
 void solve(){
-    ll n, s; cin >> n >> s;
+    int n, m; cin >> n >> m;
+    int h[n + 5][m + 5];
+    memset(h, 0, sizeof(h));
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+            cin >> h[i][j];
 
-    if (sumDigit(n) <= s) {
-        cout << 0 << endl;
-        return;
-    }
+    ll s = 0;
+    // mat tren + day
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++) 
+            if (h[i][j] > 0) s += 2;
 
-    ll ans = 0, pow10 = 1;
-    while (sumDigit(n) > s) {
-        ll r = n % pow10;
-        if (r != 0) {
-            ll x = pow10 - r;
-            n += x;
-            ans += x;
+    // sxq
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= m; j++) {
+            s += getSxq(h[i][j], h[i-1][j]);
+            s += getSxq(h[i][j], h[i+1][j]);
+            s += getSxq(h[i][j], h[i][j-1]);
+            s += getSxq(h[i][j], h[i][j+1]);
         }
-
-        pow10 *= 10; //lam tron hang tiep
     }
 
-    cout << ans << endl;
+    cout << s << endl;
 }
 
 void iof(){

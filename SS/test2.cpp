@@ -16,104 +16,26 @@ using namespace std;
 #define pii pair<int, int>
 #define pll pair<ll, ll>
 
-const int MOD = 1e9 + 7;
+const ll MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
-struct Data{
-    multiset<int> ms;
-    // Data(multiset<int> ms) : ms(ms) {};
-};
+ll POW[N], hashT[N];
 
-Data tree[4*N];
-int a[N], n, m;
-
-Data mergeNode(Data& l_node, Data& r_node) {
-    Data res;
-    res.ms.insert(l_node.ms.begin(), l_node.ms.end());
-    res.ms.insert(r_node.ms.begin(), r_node.ms.end());
-    return res;
+ll getHashT(int i, int j) {
+    return (hashT[j] - hashT[i-1]*POW[j-i+1] + MOD*MOD ) % MOD;
 }
-
-void build(int node, int tl, int tr) {
-    if (tl == tr) {
-        tree[node].ms.insert(a[tl]);
-    } else {
-        int mid = (tl + tr) / 2;
-        build(2*node, tl, mid);
-        build(2*node + 1, mid + 1, tr);
-
-        tree[node] = mergeNode(tree[2*node], tree[2*node + 1]);
-    }
-}
-
-void update(int node, int tl, int tr, int idx, int val) {
-    if (tl == tr) {
-        tree[node].ms.erase(tree[node].ms.find(a[idx]));
-        tree[node].ms.insert(val);
-        a[idx] = val;
-    } else {
-        int mid = (tl + tr) / 2;
-        if (idx <= mid) {
-            update(2*node, tl, mid, idx, val);
-        } else {
-            update(2*node + 1, mid + 1, tr, idx, val);
-        }
-
-        tree[node] = mergeNode(tree[2*node], tree[2*node + 1]);
-    }
-}
-
-Data getRes(int node, int tl, int tr, int l, int r) {
-    if (l > tr || r < tl) return Data();
-    if (l <= tl && tr <= r) return tree[node];
-
-    int mid = (tl + tr) / 2;
-    Data d1 = getRes(2*node, tl, mid, l, r);
-    Data d2 = getRes(2*node + 1, mid + 1, tr, l, r);
-
-    return mergeNode(d1, d2);
-}
-
-int query(int l, int r, int x) {
-    Data res = getRes(1, 1, n, l, r);
-
-    auto it = res.ms.upper_bound(x);
-    if (it != res.ms.end()){
-        return *it;
-    }
-    return -1;
-}
-
-int query2(int node, int tl, int tr, int l, int r, int x) {
-    if (l > tr || r < tl) return INT_MAX;
-    if (l <= tl && tr <= r) {
-        auto it = tree[node].ms.upper_bound(x);
-        if (it != tree[node].ms.end()) return *it;
-        else return INT_MAX;
-    }
-    int mid = (tl + tr) / 2;
-    int left = query2(2 * node, tl, mid, l, r, x);
-    int right = query2(2 * node + 1, mid + 1, tr, l, r, x);
-    return min(left, right);
-}
-
 
 void solve(){
-    cin >> n >> m;
-    for (int i = 1; i <= n; i++) cin >> a[i];
-    build(1, 1, n);
-
-    while (m--) {
-        int q; cin >> q;
-        if (q == 1){
-            int u, v; cin >> u >> v;
-            update(1, 1, n, u, v);
-        } else {
-            int l, r, x; cin >> l >> r >> x;
-            int ans = query2(1, 1, n, l, r, x);
-            cout << (ans == INT_MAX ? -1 : ans) << endl;
-        }
-    }
+    string txt, pat; cin >> txt >> pat;
+    int m = txt.sz, n = pat.sz;
+    txt = " " + txt; pat = " " + pat;
+    POW[0] = 1;
+    for (int i = 1; i <= m; i++) POW[i] = (POW[i-1] * 26) % MOD;
+    for (int i = 1; i <= m; i++) hashT[i] = (hashT[i-1]*26 + txt[i] - 'a') % MOD;
+    ll hashP = 0;
+    for (int i = 1; i <= n; i++) hashP = (hashP*26 + pat[i]-'a') % MOD;
+    for (int i = 1; i <= m-n+1; i++) 
+        if (hashP == getHashT(i, i+n-1)) cout << i << ' ';
 }
 
 void iof(){
