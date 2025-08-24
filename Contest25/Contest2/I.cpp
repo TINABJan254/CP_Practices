@@ -19,29 +19,37 @@ using namespace std;
 const int MOD = 1e9 + 7;
 const int N = 1e6 + 5;
 
-bool cmp(string a, string b){
-    if (a.sz != b.sz)
-        return a.sz > b.sz;
-    return a > b;
-}
+ll c[65][65];
 
-bool cmp2(string a, string b){
-    string s1 = a + b;
-    string s2 = b + a;
-    if (s1 > s2) return true;
-    return false;
+void init(){
+    for (int n = 0; n < 65; n++) {
+        c[n][0] = c[n][n] = 1;
+        for (int k = 1; k < n; k++) {
+            c[n][k] = c[n-1][k-1] + c[n-1][k];
+        }
+    }
 }
 
 void solve(){
-    int n; cin >> n;
-    string a[n];
-    for (int i = 0; i < n; i++) cin >> a[i];
+    ll a, b, k; cin >> a >> b >> k;
+    string ans = "";
+    while (a != 0 && b != 0) {
+        ll cnt = c[a+b-1][a-1]; //số lượng xâu có thể tạo với pattern có vị trí hiện tại là a
+        if (k <= cnt) {
+            ans += "a";
+            --a;
+        } else {
+            ans += "b";
+            --b;
+            k -= cnt;
+        }
+    }
 
-    sort(a, a + n, cmp);
+    //phần còn lại
+    ans.append(a, 'a');
+    ans.append(b, 'b');
 
-    sort(a, a + 3, cmp2);
-
-    cout << a[0] + a[1] + a[2] << endl;
+    cout << ans << endl;
 }
 
 void iof(){
@@ -56,12 +64,17 @@ int main(){
     faster();
     int TC = 1; 
     // cin >> TC;
+    init();
     while (TC--){
       solve();
     }
-
     return 0;
 }
+
+/**
+ *    author:  thienban
+ *    created: 23-08-2025 22:56:35
+**/
 
 /*
     

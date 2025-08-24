@@ -44,15 +44,7 @@ void solve(){
     cout << a[0] + a[1] + a[2] << endl;
 }
 
-void iof(){
-    #ifndef ONLINE_JUDGE
-        freopen("../build/inputf.txt", "r", stdin);
-        // freopen("outputf.txt", "w", stdout);
-    #endif
-}
-
 int main(){
-    iof();
     faster();
     int TC = 1; 
     // cin >> TC;
@@ -62,6 +54,11 @@ int main(){
 
     return 0;
 }
+
+/**
+ *    author:  thienban
+ *    created: 24-08-2025 10:03:23
+**/
 
 /*
     
